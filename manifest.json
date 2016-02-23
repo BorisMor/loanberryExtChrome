@@ -1,0 +1,48 @@
+{
+  "manifest_version": 2,
+
+  // http://content-security-policy.com/
+  "content_security_policy": "script-src 'self' https://api.loanberry.ru 'unsafe-eval'; object-src 'self'",
+
+  "name": "Loanberry",
+  "description": "Loanberry - взаймы онлайн",
+  "version": "1.0",
+  "icons": {
+    "128": "ico_128.png",
+    "32": "ico_32.png",
+    "16": "ico_16.png"
+  },
+
+
+  "browser_action": {
+    "default_icon": "ico_16.png",
+    "default_popup": "popup.html"
+  },
+
+  "background": {
+    "scripts": ["jquery.min.js", "underscore-min.js", "background.class.js", "background.js"]
+  },
+
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "storage",
+    "background",
+    "http://*/*",
+    "https://*/*"
+  ],
+
+  "content_scripts": [{
+    "js": ["jquery.min.js", "underscore-min.js"],
+    "css": ["style.css"],
+    "matches": [ "http://*/*", "https://*/*"]
+  }],
+
+  "web_accessible_resources": [
+    "bootstrap.min.css"
+  ],
+
+  "sandbox": {
+    "pages": ["background.class.js"]
+  }
+}

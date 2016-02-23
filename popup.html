@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="jquery.min.js"></script>
+    <script src="underscore-min.js"></script>
+    <script src="popup.js"></script>
+    <link rel="stylesheet" type="text/css" href="bootstrap.min.css" />
+</head>
+<body style="width: 750px">
+
+<style>
+    .border{
+        font-size: 12px;
+        margin: 5px 0 5px 0;
+    }
+
+    .table>thead>tr>th {
+        padding: 4px
+    }
+
+</style>
+
+<div class="container-fluid">
+    <div class="row-fluid">
+        <div class="col-md-12 border">
+
+            <label>
+                <input type="checkbox" name="filterActive" value="1">
+                Только активные
+            </label>
+
+            <a href="#" class="update" style="padding-left: 20px">
+                Обновить
+            </a>
+
+
+            <table class="table proposals">
+                <thead>
+                    <tr>
+                        <th>Рейтинг</th>
+                        <th>Заемщик</th>
+                        <th>Цель займа</th>
+                        <th>Сумма</th>
+                        <th title="месяцы">Срок</th>
+                        <th title="Процентная ставка в годовых">Ставка</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/html" id='tmp_item'>
+    <tr class="<%= (status=='active') ? 'warning' : '' %>">
+        <td> <%= user.rating %> </td>
+        <td> <%= user.login %> </td>
+        <td>
+            <a href="<%= url_view %>" target="_blank">
+                <%= purpose %>
+            </a>
+        </td>
+        <td> <%= amount %> </td>
+        <td> <%= term %> </td>
+        <td> <%= (status == "active") ? maxPercent : deal.percent %> </td>
+        <td> <%= statusLabel %> </td>
+    </tr>
+</script>
+</body>
+</html>
