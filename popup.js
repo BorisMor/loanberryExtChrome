@@ -11,10 +11,10 @@ var PopupClass = (function () {
         this.filter = {
             'active': false
         };
+        this.initDOM();
         this.windownBack = chrome.extension.getBackgroundPage();
         this.backgroud = this.windownBack.mainObject;
-        this.initDOM();
-        this.render();
+        this.loadSettings(this.render);
     }
     PopupClass.prototype.render = function () {
         var htmlTempItems = $('#tmp_item').html();
@@ -37,11 +37,27 @@ var PopupClass = (function () {
             $('.table.proposals tbody').append(trItem);
         }
     };
+    PopupClass.prototype.saveSettings = function () {
+        chrome.storage.sync.set(this.filter, function () {
+            console.log("saved");
+        });
+    };
+    PopupClass.prototype.loadSettings = function (callback) {
+        var self = this;
+        chrome.storage.sync.get(this.filter, function (items) {
+            for (var nameValue in self.filter) {
+                self.filter[nameValue] = items[nameValue];
+            }
+            self.DOM.filterActive.prop('checked', self.filter.active);
+            callback.call(self);
+        });
+    };
     /**
      * Поставить фильтр только по активныым
      */
     PopupClass.prototype.changeFilterActive = function (event) {
         this.filter.active = this.DOM.filterActive.prop('checked');
+        this.saveSettings();
         this.render();
     };
     /**

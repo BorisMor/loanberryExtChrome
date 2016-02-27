@@ -44,11 +44,30 @@ class PopupClass {
         }
     }
 
+    public saveSettings(){
+        chrome.storage.sync.set(this.filter, function(){
+            console.log("saved");
+        });
+    }
+
+    public loadSettings(callback:() => any){
+        var self = this;
+        chrome.storage.sync.get(this.filter, function(items){
+            for(var nameValue in self.filter) {
+                self.filter[nameValue] = items[nameValue];
+            }
+
+            self.DOM.filterActive.prop('checked', self.filter.active);
+            callback.call(self);
+        });
+    }
+
     /**
      * Поставить фильтр только по активныым
      */
     public changeFilterActive(event){
         this.filter.active = this.DOM.filterActive.prop('checked');
+        this.saveSettings();
         this.render();
     }
 
@@ -74,10 +93,10 @@ class PopupClass {
     }
 
     constructor(){
+        this.initDOM();
         this.windownBack = chrome.extension.getBackgroundPage();
         this.backgroud = this.windownBack.mainObject;
-        this.initDOM();
-        this.render();
+        this.loadSettings(this.render);
     }
 
 
